@@ -1,4 +1,7 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using VermutClub.Data;
+using VermutClub.Models;
 
 namespace VermutClub.Controllers.Api
 {
@@ -6,6 +9,13 @@ namespace VermutClub.Controllers.Api
     [Route("api/[controller]")]
     public class SubscriptionsApiController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
+
+        public SubscriptionsApiController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         // 👉 Necesario para que el CORS funcione
         [HttpOptions]
         public IActionResult Options()
@@ -14,7 +24,7 @@ namespace VermutClub.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] SubscriptionRequest request)
+        public async Task<IActionResult> Post([FromBody] SubscriptionRequest request)
         {
             Console.WriteLine("=== Nueva suscripción recibida ===");
             Console.WriteLine($"Nombre: {request.Nombre}");
@@ -24,14 +34,19 @@ namespace VermutClub.Controllers.Api
             Console.WriteLine("=================================");
 
             return Ok(new { message = "Suscripción recibida correctamente" });
-        }
-    }
 
-    public class SubscriptionRequest
-    {
-        public string Nombre { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Plan { get; set; }
+            var sus = new SubscriptionRequest
+            {
+                Nombre = request.Nombre ,
+                Email = request.Email,
+                Phone= request.Phone,
+                Plan= request.Plan  
+            };
+
+            _context.SubscriptionRequests.Add(sus);
+            await  _context.SaveChangesAsync();
+            return Ok(new { message = "Suscripción guardada correctamente" });
+        
+        }
     }
 }

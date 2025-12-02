@@ -1,4 +1,6 @@
-public class SubscriptionsRequest
+namespace VermutClub.Models
+{
+public class SubscriptionRequest
 {
     public int Id { get; set; }
     public string Nombre { get; set; }
@@ -6,4 +8,5 @@ public class SubscriptionsRequest
     public string Phone { get; set; }
     public string Plan { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
 }

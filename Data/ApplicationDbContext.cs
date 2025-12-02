@@ -13,7 +13,7 @@ namespace VermutClub.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<SubscriptionsRequest> SubscriptionRequests { get; set; }
+        public DbSet<SubscriptionRequest> SubscriptionRequests { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
